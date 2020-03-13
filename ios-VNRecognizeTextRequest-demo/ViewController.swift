@@ -24,7 +24,7 @@ final class ViewController: UIViewController {
 
         // accurate or fast
         request.recognitionLevel = .accurate
-        request.recognitionLanguages = ["en_US"] // jp_JPは、認識せず
+        request.recognitionLanguages = ["en_US"] // ja_JPは、認識せず
         request.usesLanguageCorrection = true
         let requests = [request]
         let imageRequestHandler = VNImageRequestHandler(cgImage: cgImage,  options: [:])
@@ -41,7 +41,7 @@ final class ViewController: UIViewController {
             return
         }
 
-        var message = ""
+        var detectedText = ""
         
         for observation in observations {
             let candidates = 1
@@ -50,8 +50,14 @@ final class ViewController: UIViewController {
             }
             
             //文字認識結果
-            message += (bestCandidate.string + "\n")
-            ocrTextLabel.text = message
+            detectedText += bestCandidate.string
+            detectedText += "\n"
+        }
+        
+        print("検出文字列 : ", detectedText)
+        
+        DispatchQueue.main.async {
+            self.ocrTextLabel.text = detectedText
         }
     }
 }
